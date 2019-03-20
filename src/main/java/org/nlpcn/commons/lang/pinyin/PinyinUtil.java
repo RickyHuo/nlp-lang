@@ -14,9 +14,7 @@ import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.nio.charset.StandardCharsets;
-import java.util.Collections;
-import java.util.LinkedList;
-import java.util.List;
+import java.util.*;
 
 /**
  *
@@ -119,9 +117,14 @@ enum PinyinUtil {
 				lists.add(null);
 			}
 
-			if(temp.length()==1){ //单个字取第一个拼音
-				lists.add(PinyinFormatter.formatPinyin(word.getParam()[0], format));
-			}else{
+			if(temp.length()==1){ //多音字用" "链接
+//				lists.add(PinyinFormatter.formatPinyin(word.getParam()[0], format));
+//              System.out.println(String.join(" ", word.getParam()));
+
+				String[] filterParam = filterParams(word.getParam(), format);
+                lists.add(String.join(" ", filterParam));
+
+            }else{
 				for (String t : word.getParam()) {
 					lists.add(PinyinFormatter.formatPinyin(t, format));
 
@@ -141,6 +144,22 @@ enum PinyinUtil {
 		return lists;
 
 	}
+
+	public String[] filterParams(String[] params, PinyinFormatter.TYPE format) {
+
+        Set<String> set = new LinkedHashSet<>();
+        List<String> newParams = new ArrayList<>();
+
+        for (String param: params) {
+            int lenBefore = set.size();
+            String formatParam = PinyinFormatter.formatPinyin(param, format);
+            set.add(formatParam);
+            if (lenBefore != set.size()) {
+                newParams.add(formatParam);
+            }
+        }
+		return newParams.toArray(new String[0]);
+    }
 
 	/**
 	 * 动态增加拼音到词典
