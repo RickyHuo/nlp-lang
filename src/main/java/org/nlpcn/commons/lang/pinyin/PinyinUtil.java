@@ -107,7 +107,6 @@ enum PinyinUtil {
 
 		SmartGetWord<String[]> word = polyphoneDict.getWord(str);
 
-
 		List<String> lists = new LinkedList<String>();
 
 		String temp = null;
@@ -140,22 +139,6 @@ enum PinyinUtil {
 
 	}
 
-
-	public String[] filterParams(String[] params, PinyinFormatter.TYPE format) {
-
-        Set<String> set = new LinkedHashSet<>();
-        List<String> newParams = new ArrayList<>();
-
-        for (String param: params) {
-            int lenBefore = set.size();
-            String formatParam = PinyinFormatter.formatPinyin(param, format);
-            set.add(formatParam);
-            if (lenBefore != set.size()) {
-                newParams.add(formatParam);
-            }
-        }
-		return newParams.toArray(new String[0]);
-    }
 
 	/**
 	 * 动态增加拼音到词典
