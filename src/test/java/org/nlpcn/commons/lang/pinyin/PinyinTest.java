@@ -90,11 +90,11 @@ public class PinyinTest {
 
 	@Test
 	public void testYinBiao(){
-		String str = "三一重工" ;
+		String str = "河北乐亭核心目标与，，，，，，,@#$%^&*(发展战略都市绿" ;
 
 		System.out.println(Pinyin.pinyin(str));
-//		System.out.println(Pinyin.firstChar(str));
-//		System.out.println(Pinyin.tonePinyin(str));
-//		System.out.println(Pinyin.unicodePinyin(str));
+		System.out.println(Pinyin.firstChar(str));
+		System.out.println(Pinyin.tonePinyin(str));
+		System.out.println(Pinyin.unicodePinyin(str));
 	}
 }
