@@ -1,8 +1,3 @@
-/**
- * File    : Pinyin.java
- * Created : 2014年1月22日
- * By      : luhuiguo
- */
 package org.nlpcn.commons.lang.pinyin;
 
 import org.nlpcn.commons.lang.tire.SmartGetWord;
@@ -16,11 +11,6 @@ import java.io.InputStreamReader;
 import java.nio.charset.StandardCharsets;
 import java.util.*;
 
-/**
- *
- * @author luhuiguo
- * @author ansj
- */
 enum MultiplePinyinUtil {
 
 	INSTANCE;
