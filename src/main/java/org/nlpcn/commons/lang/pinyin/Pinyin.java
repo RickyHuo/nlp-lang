@@ -15,6 +15,10 @@ public class Pinyin {
 		return PinyinUtil.INSTANCE.convert(str, PinyinFormatter.TYPE.WITHOUT_NUM_PINYIN_FORMAT);
 	}
 
+	public static List<String> multiplePinyin(String str) {
+	    return MultiplePinyinUtil.INSTANCE.convert(str, PinyinFormatter.TYPE.WITHOUT_NUM_PINYIN_FORMAT);
+    }
+
 	/**
 	 * 取得每个字的首字符
 	 *
@@ -24,6 +28,10 @@ public class Pinyin {
 	public static List<String> firstChar(String str) {
 		return PinyinUtil.INSTANCE.convert(str, PinyinFormatter.TYPE.FIRST_CHAR_PINYIN_FORMAT);
 	}
+
+    public static List<String> multipleFirstChar(String str) {
+        return MultiplePinyinUtil.INSTANCE.convert(str, PinyinFormatter.TYPE.FIRST_CHAR_PINYIN_FORMAT);
+    }
 
 	/**
 	 * 取得每个字的帶音標
@@ -35,6 +43,10 @@ public class Pinyin {
 		return PinyinUtil.INSTANCE.convert(str, PinyinFormatter.TYPE.UNICODE_PINYIN_FORMAT);
 	}
 
+    public static List<String> MutipUnicodePinyin(String str) {
+        return MultiplePinyinUtil.INSTANCE.convert(str, PinyinFormatter.TYPE.UNICODE_PINYIN_FORMAT);
+    }
+
 	/**
 	 * 要音標的拼音
 	 *
@@ -44,6 +56,10 @@ public class Pinyin {
 	public static List<String> tonePinyin(String str) {
 		return PinyinUtil.INSTANCE.convert(str, PinyinFormatter.TYPE.DEFAULT_PINYIN_FORMAT);
 	}
+
+    public static List<String> MultipTonePinyin(String str) {
+        return MultiplePinyinUtil.INSTANCE.convert(str, PinyinFormatter.TYPE.DEFAULT_PINYIN_FORMAT);
+    }
 
 	/**
 	 * list 转换为字符串

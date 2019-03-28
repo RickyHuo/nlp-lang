@@ -1,8 +1,3 @@
-/**
- * File    : Pinyin.java
- * Created : 2014年1月22日
- * By      : luhuiguo
- */
 package org.nlpcn.commons.lang.pinyin;
 
 import org.nlpcn.commons.lang.tire.SmartGetWord;
@@ -16,17 +11,11 @@ import java.io.InputStreamReader;
 import java.nio.charset.StandardCharsets;
 import java.util.*;
 
-/**
- *
- * @author luhuiguo
- * @author ansj
- */
-enum PinyinUtil {
+enum MultiplePinyinUtil {
 
 	INSTANCE;
 
 	public static final String PINYIN_MAPPING_FILE = "/pinyin.txt";
-	public static final String POLYPHONE_MAPPING_FILE = "/polyphone.txt";
 
 	public static final String EMPTY = "";
 	public static final String SHARP = "#";
@@ -38,10 +27,9 @@ enum PinyinUtil {
 
 	private int maxLen = 2;
 
-	PinyinUtil() {
+	MultiplePinyinUtil() {
         polyphoneDict = new SmartForest<String[]>();
         loadPinyinMapping();
-        loadPolyphoneMapping();
 	}
 
 	public void loadPinyinMapping() {
@@ -68,38 +56,8 @@ enum PinyinUtil {
 		}
 	}
 
-	public void loadPolyphoneMapping() {
 
-
-		try {
-			BufferedReader in = new BufferedReader(
-					new InputStreamReader(new BufferedInputStream(getClass().getResourceAsStream(POLYPHONE_MAPPING_FILE)), StandardCharsets.UTF_8));
-
-			String line = null;
-			while (null != (line = in.readLine())) {
-				// line = line.trim();
-				if (line.length() == 0 || line.startsWith(SHARP)) {
-					continue;
-				}
-				String[] pair = line.split(EQUAL);
-
-				if (pair.length < 2) {
-					continue;
-				}
-				maxLen = maxLen < pair[0].length() ? pair[0].length() : maxLen;
-
-				polyphoneDict.add(pair[0], pair[1].split(SPACE));
-
-			}
-
-			in.close();
-
-		} catch (IOException e) {
-			e.printStackTrace();
-		}
-	}
-
-	public List<String> convert(String str,  PinyinFormatter.TYPE format) {
+	public List<String> convert(String str, PinyinFormatter.TYPE format) {
 
 		if (StringUtil.isBlank(str)) {
 			return Collections.emptyList();
@@ -117,9 +75,14 @@ enum PinyinUtil {
 				lists.add(null);
 			}
 
-			if(temp.length()==1){ //单个字取第一个拼音
-				lists.add(PinyinFormatter.formatPinyin(word.getParam()[0], format));
-			}else{
+			if(temp.length()==1){ //多音字用" "链接
+//				lists.add(PinyinFormatter.formatPinyin(word.getParam()[0], format));
+//              System.out.println(String.join(" ", word.getParam()));
+
+				String[] filterParam = filterParams(word.getParam(), format);
+                lists.add(String.join(" ", filterParam));
+
+            }else{
 				for (String t : word.getParam()) {
 					lists.add(PinyinFormatter.formatPinyin(t, format));
 
@@ -135,18 +98,25 @@ enum PinyinUtil {
 			}
 		}
 
+
 		return lists;
 
 	}
 
+	public String[] filterParams(String[] params, PinyinFormatter.TYPE format) {
 
-	/**
-	 * 动态增加拼音到词典
-	 *
-	 * @param word
-	 * @param pinyins
-	 */
-	public void insertPinyin(String word, String[] pinyins) {
-		polyphoneDict.add(word, pinyins);
-	}
+        Set<String> set = new LinkedHashSet<>();
+        List<String> newParams = new ArrayList<>();
+
+        for (String param: params) {
+            int lenBefore = set.size();
+            String formatParam = PinyinFormatter.formatPinyin(param, format);
+            set.add(formatParam);
+            if (lenBefore != set.size()) {
+                newParams.add(formatParam);
+            }
+        }
+		return newParams.toArray(new String[0]);
+    }
+
 }
